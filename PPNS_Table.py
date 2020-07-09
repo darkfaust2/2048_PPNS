@@ -157,7 +157,7 @@ class PPNS:
             self.expansion(selected_node)
             # back_propagation
             self.back(selected_node)
-            print(root_node.ppn)
+            # print(root_node.ppn)
         if 1 - root_node.ppn <= threshold:
             root_node.ppn = 1
         else:

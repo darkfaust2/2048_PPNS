@@ -1,5 +1,6 @@
 import random
 from Game import Game
+import time
 
 
 class Node:
@@ -127,7 +128,8 @@ class PPNS:
         root_node = Node(initial_hash, -1, 0)
         self.expansion(root_node)
         self.back_propagation(root_node)
-        while root_node.ppn != 0 and root_node.ppn != 1:
+        threshold = pow(self.theta, 2)
+        while 1 - root_node.ppn > threshold and root_node.ppn > threshold:
             # selection
             selected_node = self.selection(root_node)
             while selected_node.child_nodes:
@@ -136,6 +138,11 @@ class PPNS:
             self.expansion(selected_node)
             # back_propagation
             self.back(selected_node)
+            # print(root_node.ppn)
+        if 1 - root_node.ppn <= threshold:
+            root_node.ppn = 1
+        else:
+            root_node.ppn = 0
         print("========================================")
         print(root_node.ppn)
         print("========================================")
@@ -143,5 +150,8 @@ class PPNS:
 
 
 if __name__ == '__main__':
-    ppns = PPNS(32, 60, 32, 0.001)
+    t1 = time.process_time()
+    ppns = PPNS(64, 60, 64, 0.001)
     ppns.search("BBAAAAAAAAAAAAAA")
+    t2 = time.process_time()
+    print("runtime: {t:.0f}(s)".format(t=t2 - t1))
